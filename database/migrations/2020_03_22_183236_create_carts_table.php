@@ -18,7 +18,6 @@ class CreateCartsTable extends Migration
             $table->bigInteger('user_id');
             $table->dateTime('paid_at')->nullable();
             $table->integer('total');
-            $table->integer('balance');
             $table->timestamps();
         });
     }
