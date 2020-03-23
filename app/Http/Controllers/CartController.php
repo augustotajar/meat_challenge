@@ -55,7 +55,10 @@ class CartController extends Controller
         }
         
         //Updates the relationship
-        $cart->products()->syncWithoutDetaching([$product_id => ['quantity' => $current_quantity + $request->quantity]]);
+        $new_quantity = $current_quantity + $request->quantity;
+
+        $cart->products()->detach($product_id);
+        $cart->products()->attach([$product_id => ['quantity' => $new_quantity]]);
         $cart->total = $this->cartValue($cart);
         $cart->save();
 
@@ -91,11 +94,8 @@ class CartController extends Controller
         
         $new_quantity = $current_quantity - $request->quantity;
 
-        if($new_quantity <= 0){
-            $cart->products()->detach($product_id);
-        }else{
-            $cart->products()->syncWithoutDetaching([$product_id => ['quantity' => $new_quantity]]);
-        }
+        $cart->products()->detach($product_id);
+        $cart->products()->attach([$product_id => ['quantity' => $new_quantity]]);
 
         $cart->total = $this->cartValue($cart); //Trait
         $cart->save();

@@ -39,12 +39,10 @@ trait CartTrait
      * @param  \App\Cart  $cart
      * @return int
      */
-    public function cartValue($cart) {
+    public function cartValue($cart) 
+    {
             $total = 0;
-
-            if(!isset($cart->products)){
-                $cart->load('products');
-            }
+            $cart->load('products');
 
             foreach($cart->products as $product){
                 $total += $product->price * $product->pivot->quantity;
