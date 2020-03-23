@@ -17,4 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources(['products' => 'ProductController']);
+//Product
+Route::apiResource('products', 'ProductController');
+
+//Cart
+Route::middleware('auth:api')->resource('carts', 'CartController')->only(['index', 'destroy']);
+Route::middleware('auth:api')->post('/carts/addProduct', 'CartController@addProduct');
+Route::middleware('auth:api')->put('/carts/removeProduct', 'CartController@removeProduct');
