@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCartPaymentTable extends Migration
+class AddCartIdToPayment extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCartPaymentTable extends Migration
      */
     public function up()
     {
-        Schema::create('cart_payment', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::table('payments', function (Blueprint $table) {
             $table->bigInteger('cart_id');
-            $table->bigInteger('payment_id');
-            $table->timestamps();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateCartPaymentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_payment');
+        Schema::table('payments', function (Blueprint $table) {
+            $table->dropColumn('cart_id');
+        });
     }
 }
