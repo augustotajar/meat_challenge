@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Payment;
 use App\Cart;
+use App\Events\PaymentMade;
 
 class PaymentController extends Controller
 {
@@ -53,6 +54,7 @@ class PaymentController extends Controller
 
             Cart::findOrFail($request->cart_id);
             $payment = Payment::create($payment);
+            event(new PaymentMade($payment));
 
             return response()->json($payment, 201);
 

@@ -40,7 +40,6 @@ trait CartTrait
      * @return int
      */
     public function cartValue($cart) {
-        try{
             $total = 0;
 
             if(!isset($cart->products)){
@@ -53,8 +52,29 @@ trait CartTrait
             
             return $total;
 
-        }catch(\Exception $e){
-            return $total;
-        }
     }
+
+    
+
+    /**
+     * Returns the balance between the total cart value and the total of payments.
+     *
+     * @param  \App\Cart  $cart
+     * @return int
+     */
+    public function cartBalance($cart) 
+    {
+        $balance = 0;
+
+        if(!isset($cart->payments)){
+            $cart->load('payments');
+        }
+
+        foreach($cart->payments as $payment){
+            $balance += $payment->amount;
+        }
+        
+        return $cart->total - $balance;
+    }
+
 }
