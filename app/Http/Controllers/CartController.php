@@ -20,7 +20,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        return Cart::with('products')->where('user_id',Auth::user()->id)->get();
+        return Cart::with('products','payments')->where('user_id',Auth::user()->id)->get();
     }
 
     /**

@@ -30,4 +30,12 @@ class Cart extends Model
     {
         return $this->belongsToMany('App\Product')->withPivot('quantity');
     }
+
+    /**
+     * The payments that belong to the role.
+     */
+    public function payments()
+    {
+        return $this->hasMany('App\Payment');
+    }
 }
