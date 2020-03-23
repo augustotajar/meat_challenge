@@ -82,7 +82,7 @@ class CartController extends Controller
         $product_id = $request->id;
         Product::findOrFail($product_id);
         $user = $request->user();
-        $current_quantity = $this->countProductOnCustomersCart($user->id,$product_id);  //Using trait
+        $current_quantity = $this->countProductOnCustomersCart($user->id,$product_id);  //Trait
         $cart = Cart::with('products')->where('user_id', $user->id)->whereNull('paid_at')->first();
         
         if(empty($cart)){
@@ -97,7 +97,7 @@ class CartController extends Controller
             $cart->products()->syncWithoutDetaching([$product_id => ['quantity' => $new_quantity]]);
         }
 
-        $cart->total = $this->cartValue($cart); //Using trait
+        $cart->total = $this->cartValue($cart); //Trait
         $cart->save();
 
         return response($cart->load('products'),201);
