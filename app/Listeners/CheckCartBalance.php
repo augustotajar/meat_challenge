@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\PaymentMade;
 use App\Http\Traits\CartTrait;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\ProcessPaidCart;
 
 class CheckCartBalance
 {
@@ -34,12 +35,7 @@ class CheckCartBalance
         if($this->cartBalance($cart) <= 0){
             Log::debug("Cart $cart->id Paid!");
             if(empty($cart->paid_at)){
-                $cart->paid_at = now();
-                $cart->load('products');
-                foreach($cart->products as $product){
-                    $product->stock -= $product->pivot->quantity;
-                    $product->save();
-                }
+                ProcessPaidCart::dispatch($cart);
             }
         }
 
